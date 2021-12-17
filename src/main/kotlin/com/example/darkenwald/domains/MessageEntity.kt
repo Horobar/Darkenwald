@@ -14,6 +14,7 @@ import javax.persistence.Table
 @Table(name = "MESSAGE")
 class MessageEntity {
     @Id
+    @GeneratedValue
     @Column(name = "message_id", nullable = false)
     open var id: Long? = null
 
@@ -28,7 +29,7 @@ class MessageEntity {
     lateinit var created: Timestamp
 
     @Column(name = "UPDATED", nullable = true)
-    lateinit var updated: Timestamp
+    var updated: Timestamp? = null
 
     @ManyToOne
     @JoinColumn(name = "ID")

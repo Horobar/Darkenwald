@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome to Darkenwald</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords"
+          content="free website templates, free html5, free template, free bootstrap, free website template, html5, css3, mobile first, responsive"/>
+
+</head>
+<body>
+<h1>Welcome to Darkenwald</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Player</th>
+            <th>Created</th>
+            <th>Text</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:if="${#lists.isEmpty(messages)}">
+            <td colspan="3">No Messages Available</td>
+        </tr>
+    <tr th:each="message : ${messages}">
+        <td><span th:text="${message.username}">Player Name</span></td>
+        <td><span th:text="${message.created}">Created</span></td>
+        <td><span th:text="${message.text}">Text</span></td>
+    </tr>
+    </tbody>
+</table>
+
+<form method="post" th:action="@{/darkenwald}" action="#" th:object="${postedMessage}">
+    <textarea th:field="*{text}"></textarea>
+    <button type="submit" value="Submit">Submit</button>
+    <button type="reset" value="Reset">Reset</button>
+</form>
+
+</body>
+</html>
