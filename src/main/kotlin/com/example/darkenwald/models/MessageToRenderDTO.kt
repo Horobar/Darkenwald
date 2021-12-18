@@ -1,7 +1,5 @@
 package com.example.darkenwald.models
 
-import java.net.URL
-import java.time.Instant
 import java.time.LocalDateTime
 
 data class MessageToRenderDTO(
@@ -9,5 +7,5 @@ data class MessageToRenderDTO(
     val created: LocalDateTime,
     val updated: LocalDateTime? = null,
     val username: String,
-    val avatarImageLink: String = "assets/avatars/default_avatar.png"
+    val avatarImageLink: String = "static/assets/avatars/default_avatar.png"
 )

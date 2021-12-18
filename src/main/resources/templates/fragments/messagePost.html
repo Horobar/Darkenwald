@@ -14,25 +14,17 @@
 </head>
 
 <body>
-<div id="page" class="border badge" th:fragment="messagePost(text, date, player)">
-    <div class="card mb-3" style="max-width: 540px;" >
-        <div class="row g-0">
-            <div class="col-md-4">
-<!--                <img src="..." class="img-fluid rounded-start" alt="...">-->
+<div th:fragment="messagePost(message)" class=>
+    <div class="container border border-dark m-1">
+        <div class="row">
+            <div class="col-2 ">
+                <div class="row m-1" th:text="${message.username}"></div>
+                <div class="row m-1"><img th:src="@{/avatars/default_avatar.png}"></div>
             </div>
-            <div class="col-md-8">
-                <div class="card-body">
-                    <!--/*@thymesVar id="message" type="com.example.werewolvesofdarkenwald.model.Message"*/-->
-                    <h5 class="card-title" th:text="${player}">Title</h5>
-                    <!--/*@thymesVar id="text" type="com.example.werewolvesofdarkenwald.model.Message"*/-->
-                    <p class="card-text" th:text="${text}">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                    <p class="card-text"><small class="text-muted" th:text="${date}">Last updated 3 mins ago</small></p>
-                </div>
-            </div>
+            <div class="col m-auto" th:text="${message.text}"></div>
         </div>
     </div>
 </div>
-
 <!-- jQuery -->
 <script th:src="@{~/static/js/jquery.min.js}"></script>
 <!-- Bootstrap -->

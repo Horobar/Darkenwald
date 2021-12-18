@@ -14,14 +14,19 @@ import java.time.OffsetDateTime
 class DayNightShiftService(
     private val eventPublisher: ApplicationEventPublisher
 ) {
-        @Scheduled(cron = "0 0 8 * * ?")
+    /**
+     * Calls an event every morning at 8 o'Clock, to signalize the day start
+     */
+    @Scheduled(cron = "0 0 8 * * ?")
         fun morningCall(){
             eventPublisher.publishEvent(DayBreakEvent(
                 this,
                 LocalDateTime.now(),
                 DayTime.DAY))
         }
-
+        /**
+         * Calls an event every evening at 20 o'Clock, to signalize the night start
+         */
         @Scheduled(cron = "0 0 20 * * ?")
         fun eveningCall(){
             eventPublisher.publishEvent(DayBreakEvent(

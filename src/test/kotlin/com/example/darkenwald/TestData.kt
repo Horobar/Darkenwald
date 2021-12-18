@@ -5,9 +5,7 @@ import com.example.darkenwald.domains.MessageEntity
 import com.example.darkenwald.domains.PlayerEntity
 import com.example.darkenwald.models.MessageDto
 import com.example.darkenwald.models.PlayerDto
-import java.net.URL
 import java.sql.Timestamp
-import java.time.Instant
 import java.time.LocalDateTime
 
 class TestData {
@@ -55,7 +53,7 @@ class TestData {
             for (i in 0..n) {
                 listOut.add(PlayerDto(
                     "name$i",
-                    "assets/avatars/default_avatar.png",
+                    "static/avatars/default_avatar.png",
                     "password$i",
                     "password$i",
                     "mail$i"

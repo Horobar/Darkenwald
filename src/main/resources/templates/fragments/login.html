@@ -14,31 +14,33 @@
 </head>
 
 <body>
-<div id="page" th:fragment="login(validationFailed)">
-    <form  id="login" name="login" class="container w-3"
-          method="post" action="/darkenwald" th:action="@{/}">
-        <fieldset>
-            <legend>Anmeldung</legend>
-            <div class="mb-3">
-                <label for="playerName" class="form-label">Player name:</label>
-                <input type="text" name="playerName" id="playerName" class="form-control">
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password:</label>
-                <input type="password" name="password" id="password" class="form-control">
-            </div>
-            <input type="submit" value="Submit" class="btn btn-primary">
-        </fieldset>
-    </form>
-    <p th:if="${validationFailed}">Login failed. Please control the player name and the password</p>
-    <a th:href="@{/registration}" class="link-primary">Ich habe noch keinen Account</a>
-</div>
+<div class="container vw-75">
+    <div id="page" th:fragment="login(validationFailed)">
+        <form id="login" name="login" class="container w-3 border border-primary"
+              method="post" action="/darkenwald" th:action="@{/}">
+            <fieldset>
+                <legend>Anmeldung</legend>
+                <div class="row gx-5 m-1">
+                    <label for="playerName" class="form-label">Player name:</label>
+                    <input type="text" name="playerName" id="playerName" class="form-control">
+                </div>
+                <div class="row gx-5 m-1">
+                    <label for="password" class="form-label">Password:</label>
+                    <input type="password" name="password" id="password" class="form-control">
+                </div>
+                <input type="submit" value="Submit" class="btn btn-primary float-right m-1">
+            </fieldset>
+        </form>
+        <p th:if="${validationFailed}">Login failed. Please control the player name and the password</p>
+        <a th:href="@{/registration}" class="link-primary d-flex justify-content-center">Ich habe noch keinen Account</a>
+    </div>
 
-<!-- jQuery -->
-<script th:src="@{~/static/js/jquery.min.js}"></script>
-<!-- Bootstrap -->
-<script th:src="@{~/static/js/bootstrap.min.js}"></script>
-<!-- Main -->
-<script th:src="@{~/static/js/main.js}"></script>
+    <!-- jQuery -->
+    <script th:src="@{~/static/js/jquery.min.js}"></script>
+    <!-- Bootstrap -->
+    <script th:src="@{~/static/js/bootstrap.min.js}"></script>
+    <!-- Main -->
+    <script th:src="@{~/static/js/main.js}"></script>
+</div>
 </body>
 </html>

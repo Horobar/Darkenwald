@@ -3,7 +3,9 @@ package com.example.darkenwald.domains
 
 import java.sql.Timestamp
 import javax.persistence.Column
+import javax.persistence.ConstraintMode
 import javax.persistence.Entity
+import javax.persistence.ForeignKey
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.persistence.JoinColumn
@@ -32,8 +34,8 @@ class MessageEntity {
     var updated: Timestamp? = null
 
     @ManyToOne
-    @JoinColumn(name = "ID")
-    lateinit var playerEntity: PlayerEntity
+    @JoinColumn(name = "player_id", foreignKey = ForeignKey(name = "FK_PLAYER"))
+    var playerEntity: PlayerEntity? = null
 }
 
 enum class ContentType {

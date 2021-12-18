@@ -1,10 +1,57 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords"
+          content="free website templates, free html5, free template, free bootstrap, free website template, html5, css3, mobile first, responsive"/>
+
+    <!-- Bootstrap  -->
+    <link rel="stylesheet" th:href="@{~/static/css/bootstrap.css}">
 </head>
+
 <body>
+
+<div id="playerEdit" th:fragment="playerEdit(playerEntities)">
+    <form method="post" action="#" th:action="@{/editPlayers}">
+        <table>
+            <select name="choosePlayer">
+                <option th:each="player : ${playerEntities}"
+                        th:text="${player.name}"
+                        th:value="${player}"></option>
+            </select>
+            <thead>
+            <tr>
+                <th>Player Name</th>
+                <th>Avatar Image Link</th>
+                <th>Mail</th>
+                <th>Password</th>
+                <th>Role</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(playerEntities)}">
+                <td colspan="3">No Messages Available</td>
+            </tr>
+            <tr>
+                <td><input type="text"  th:value="${player.name}" ></td>
+                <td><input type="text"  th:value="${player.password}"></td>
+                <td><input type="text"  th:value="${player.mail}"></td>
+                <td><input type="text"  th:value="${player.avatarImageLink}"></td>
+                <td><select >
+                    <option th:value="true" th:text="Admin"></option>
+                    <option th:value="false" th:text="Player"></option>
+                </select></td>
+            </tr>
+            </tbody>
+        </table>
+        <button type="submit" value="Submit">Submit</button>
+        <button type="reset" value="Reset">Reset</button>
+    </form>
+</div>
 
 </body>
 </html>

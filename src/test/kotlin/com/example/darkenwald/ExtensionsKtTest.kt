@@ -28,7 +28,7 @@ internal class ExtensionsKtTest(
 
         var message = TestData.generateMessageDTO(1).first()
 
-        var messageEntity = message.asMessageEntity(ContentType.PLAIN, savedPlayer)
+        var messageEntity = message.asMessageEntity(ContentType.PLAIN)
 
 
 

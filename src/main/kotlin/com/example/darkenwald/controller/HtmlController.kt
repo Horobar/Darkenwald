@@ -1,11 +1,12 @@
 package com.example.darkenwald.controller
 
 
+import com.example.darkenwald.domains.PlayerEntity
 import com.example.darkenwald.models.MessageDto
 import com.example.darkenwald.models.MessageToRenderDTO
 import com.example.darkenwald.models.PlayerDto
 import com.example.darkenwald.models.PlayerInSession
-import com.example.darkenwald.repository.PlayerRepository
+import com.example.darkenwald.service.EditPlayerService
 import com.example.darkenwald.service.LoginService
 import com.example.darkenwald.service.MessageService
 import com.example.darkenwald.service.RegistrationService
@@ -27,10 +28,19 @@ import javax.servlet.http.HttpSession
 @Controller
 class HtmlController(
     private val messageService: MessageService,
-    private val playerRepository: PlayerRepository,
     private val loginService: LoginService,
-    private val registrationService: RegistrationService
+    private val registrationService: RegistrationService,
+    private val editPlayerService: EditPlayerService
 ) {
+    @GetMapping("messagePost.html")
+    fun getFragemnt(): ModelAndView{
+        return ModelAndView("fragments/messagePost")
+    }
+    /**
+     * ModelAttributes: just to give Infos about the classes to the templates
+     */
+    @ModelAttribute("playerEntities")
+    fun playerEntities(): List<PlayerEntity> = mutableListOf()
 
     @ModelAttribute("messages")
     fun addMessages(): List<MessageToRenderDTO> = messageService.fromDayStart()
@@ -39,7 +49,7 @@ class HtmlController(
     fun messageDto() = MessageDto("", LocalDateTime.MIN)
 
     @ModelAttribute("player")
-    fun playerDto() = PlayerDto("", "assets/avatars/default_avatar.png", "", null, null)
+    fun playerDto() = PlayerDto("", "static/avatars/default_avatar.png", "", null, null)
 
     @ModelAttribute("warnings")
     fun warnings() = mutableListOf<String>()
@@ -80,6 +90,11 @@ class HtmlController(
 
             val modelAndView = ModelAndView("darkenwald")
             val currentPlayer = request.session.getAttribute("playerInSession") as PlayerInSession
+
+            if(currentPlayer.isAdmin) {
+                modelAndView.addObject("playerEntities", editPlayerService.getAllPlayerEntities())
+            }
+
             modelAndView.addObject("playerInSession", currentPlayer)
             modelAndView
         } else {

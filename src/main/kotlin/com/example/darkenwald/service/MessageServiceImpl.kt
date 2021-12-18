@@ -8,6 +8,7 @@ import com.example.darkenwald.repository.MessageRepository
 import com.example.darkenwald.repository.PlayerRepository
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.sql.Timestamp
 import java.time.LocalDateTime
 
@@ -19,21 +20,25 @@ class MessageServiceImpl(
 
     private var startTime: LocalDateTime = LocalDateTime.now().minusWeeks(1)
 
-    @EventListener()
+    @EventListener
     fun getStartTime(event: DayBreakEvent){
         startTime = event.dateTime
     }
 
+    @Transactional
     override fun fromDayStart(): List<MessageToRenderDTO> {
         return messageRepository.findAllByCreatedAfterOrderByCreatedAsc(Timestamp.valueOf(startTime)).mapToViewModel()
     }
-
+    @Transactional
     override fun post(message: MessageDto, playerName: String): List<MessageToRenderDTO> {
         val player = playerRepository.findByName(playerName)
-        val savedMessage = messageRepository.save(message.asMessageEntity(playerEntity = player))
+        val messageNew = message.asMessageEntity()
+        messageNew.playerEntity = player
+        messageRepository.save(messageNew)
         return fromDayStart()
     }
 
+    @Transactional
     override fun after(messageId: Long): List<MessageToRenderDTO> {
         val thisMessage = messageRepository.findById(messageId)
         return messageRepository

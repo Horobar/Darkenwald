@@ -20,6 +20,13 @@ class RegistrationService(
 
     private val logger: Logger = LoggerFactory.getLogger(RegistrationService::class.java)
 
+    /**
+     * Checks if the given password and the password_cofirmation matches
+     * Check if the given player doesn't exists in the repository
+     * if everything is ok, saves the new Player
+     * @return list of warnings
+     */
+    @Transactional
     fun verifyRegistration(player: PlayerDto): List<String> {
         val warnings = mutableListOf<String>()
         val foundPlayer = playerRepository.findByName(player.name)

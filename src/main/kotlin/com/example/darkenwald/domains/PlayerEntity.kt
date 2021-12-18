@@ -4,6 +4,7 @@ import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
+import javax.persistence.OneToMany
 import javax.persistence.Table
 
 @Entity
@@ -24,8 +25,9 @@ class PlayerEntity {
     lateinit var mail: String
 
     @Column(name = "AVATAR_IMAGE_LINK", nullable = false)
-    var avatarImageLink: String = "assets/avatars/default_avatar.png"
+    var avatarImageLink: String = "static/avatars/default_avatar.png"
 
     @Column(name = "IS_ADMIN", nullable = false)
     var isAdmin: Boolean = false
+
 }
