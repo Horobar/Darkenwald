@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords"
+          content="free website templates, free html5, free template, free bootstrap, free website template, html5, css3, mobile first, responsive"/>
+
+    <!-- Bootstrap  -->
+    <link rel="stylesheet" th:href="@{~/static/css/bootstrap.css}">
+</head>
+
+<body>
+<div id="page" class="border badge" th:fragment="messagePost(text, date, player)">
+    <div class="card mb-3" style="max-width: 540px;" >
+        <div class="row g-0">
+            <div class="col-md-4">
+<!--                <img src="..." class="img-fluid rounded-start" alt="...">-->
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <!--/*@thymesVar id="message" type="com.example.werewolvesofdarkenwald.model.Message"*/-->
+                    <h5 class="card-title" th:text="${player}">Title</h5>
+                    <!--/*@thymesVar id="text" type="com.example.werewolvesofdarkenwald.model.Message"*/-->
+                    <p class="card-text" th:text="${text}">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                    <p class="card-text"><small class="text-muted" th:text="${date}">Last updated 3 mins ago</small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- jQuery -->
+<script th:src="@{~/static/js/jquery.min.js}"></script>
+<!-- Bootstrap -->
+<script th:src="@{~/static/js/bootstrap.min.js}"></script>
+<!-- Main -->
+<script th:src="@{~/static/js/main.js}"></script>
+</body>
+</html>

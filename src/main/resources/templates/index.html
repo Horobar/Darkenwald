@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+    <head>
+        <meta charset="UTF-8">
+        <title>Werwolves of Darkenwald</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="keywords"
+              content="free website templates, free html5, free template, free bootstrap, free website template, html5, css3, mobile first, responsive"/>
+
+        <!-- Bootstrap  -->
+        <link rel="stylesheet" href="../static/css/bootstrap.css">
+        <!-- Bootstrap -->
+        <script src="../static/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+    <div th:insert="fragments/header :: site-header()"></div>
+
+
+    <div th:insert="fragments/login :: login(${validationFailed})"></div>
+
+
+        <!-- jQuery -->
+        <script src="../static/js/jquery.min.js"></script>
+
+    </body>
+</html>
