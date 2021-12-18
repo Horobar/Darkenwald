@@ -28,34 +28,34 @@
                     <small>Willkommen im heimeligen Dorf</small>
                 </div>
                 <div class="panel-body">
-                    <form role="form" method="post" th:action="@{/registration}">
+                    <form role="form" method="post" th:action="@{/registration}" th:object="${player}" >
                         <div class="form-group">
                             <input type="text" name="player_name" id="player_name" class="form-control input-sm"
-                                   placeholder="Player Name">
+                                   placeholder="Player Name" th:field="*{name}">
                         </div>
                         <div class="form-group">
                             <input type="email" name="email" id="email" class="form-control input-sm"
-                                   placeholder="Email Address">
+                                   placeholder="Email Address" th:field="*{mail}">
                         </div>
 
                         <div class="row">
                             <div class="col-xs-6 col-sm-6 col-md-6">
                                 <div class="form-group">
                                     <input type="password" name="password" id="password"
-                                           class="form-control input-sm" placeholder="Password">
+                                           class="form-control input-sm" placeholder="Password" th:field="*{password}">
                                 </div>
                             </div>
                             <div class="col-xs-6 col-sm-6 col-md-6">
                                 <div class="form-group">
                                     <input type="password" name="password_confirmation" id="password_confirmation"
-                                           class="form-control input-sm" placeholder="Confirm Password">
+                                           class="form-control input-sm" placeholder="Confirm Password"th:field="*{password_confirmation}">
                                 </div>
                             </div>
                         </div>
                         <input type="submit" value="Register" class="btn btn-info btn-block">
                     </form>
-                    <li th:each="message: ${messages}">
-                        <ul th:text="${message}"/>
+                    <li th:each="warning: ${warnings}">
+                        <ul th:text="${warning}"></ul>
                     </li>
                 </div>
             </div>

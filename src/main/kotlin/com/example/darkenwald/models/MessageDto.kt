@@ -7,5 +7,4 @@ import java.util.UUID
 data class MessageDto(
     var text: String,
     var created: LocalDateTime?,
-    var userID: Long?,
 )

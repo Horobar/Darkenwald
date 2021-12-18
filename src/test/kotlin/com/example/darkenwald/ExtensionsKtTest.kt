@@ -24,12 +24,11 @@ internal class ExtensionsKtTest(
     @Test
     fun `MessageDto asMessageEntity maps correctly`(){
         val player = TestData.generatePlayerEntities(1)
-        playerRepository.save(player.first())
+        val savedPlayer = playerRepository.save(player.first())
 
         var message = TestData.generateMessageDTO(1).first()
-        message.userID = 1L
 
-        var messageEntity = message.asMessageEntity(ContentType.PLAIN, playerRepository)
+        var messageEntity = message.asMessageEntity(ContentType.PLAIN, savedPlayer)
 
 
 

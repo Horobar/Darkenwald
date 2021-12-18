@@ -45,7 +45,6 @@ class TestData {
                 listOut.add(MessageDto(
                     "text$i",
                     LocalDateTime.MIN,
-                    i.toLong()
                 ))
             }
             return listOut
@@ -56,7 +55,7 @@ class TestData {
             for (i in 0..n) {
                 listOut.add(PlayerDto(
                     "name$i",
-                    URL(""),
+                    "assets/avatars/default_avatar.png",
                     "password$i",
                     "password$i",
                     "mail$i"

@@ -9,5 +9,5 @@ data class MessageToRenderDTO(
     val created: LocalDateTime,
     val updated: LocalDateTime? = null,
     val username: String,
-    val avatarImageLink: String
+    val avatarImageLink: String = "assets/avatars/default_avatar.png"
 )

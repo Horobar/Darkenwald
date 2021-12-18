@@ -17,17 +17,12 @@ import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
 import java.sql.Timestamp
 
-
-
-
-
-
-        fun MessageDto.asMessageEntity(contentType: ContentType = ContentType.MARKDOWN, playerRepository: PlayerRepository):
+        fun MessageDto.asMessageEntity(contentType: ContentType = ContentType.MARKDOWN, playerEntity: PlayerEntity?):
                 MessageEntity = MessageEntity().also {
 
             it.text = this.text
             it.created = Timestamp.valueOf(this.created)
-            it.playerEntity = playerRepository.findById(this.userID!!).get()
+            it.playerEntity = playerEntity!!
             it.contentType = contentType
         }
 
@@ -35,12 +30,13 @@ import java.sql.Timestamp
             it.name = this.name
             it.avatarImageLink = this.avatarImageLink.toString()
             it.mail = this.mail.toString()
-            it.password = this.password
+            it.password = this.password!!
         }
 
         fun MessageEntity.asViewModel(): MessageToRenderDTO = MessageToRenderDTO(
             text, created.toLocalDateTime(), updated?.toLocalDateTime(), playerEntity.name, playerEntity.avatarImageLink
         )
+
 
 
         fun List<MessageEntity>.mapToViewModel(): List<MessageToRenderDTO> = map { it.asViewModel() }

@@ -7,4 +7,8 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface PlayerRepository : JpaRepository<PlayerEntity, Long> {
+
+    fun findByNameAndPassword(name: String, password: String): PlayerEntity?
+
+    fun findByName(name: String): PlayerEntity?
 }

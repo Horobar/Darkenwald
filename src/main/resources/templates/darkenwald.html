@@ -12,7 +12,11 @@
 
 </head>
 <body>
-<h1>Welcome to Darkenwald</h1>
+<h1>Welcome to Darkenwald </h1>
+<h2 th:text="|Its nice to see you ${playerInSession.name}|"></h2>
+<div th:if="${playerInSession.isAdmin}">
+    <p>This section only will be rendered if you are admin</p>
+</div>
 <table>
     <thead>
         <tr>

@@ -10,6 +10,6 @@ import java.time.LocalDateTime
 @Repository
 interface MessageRepository : JpaRepository<MessageEntity, Long> {
 
-    fun findAllByCreatedAfterOrderByCreatedDesc(created: Timestamp): List<MessageEntity>
+    fun findAllByCreatedAfterOrderByCreatedAsc(created: Timestamp): List<MessageEntity>
 
 }

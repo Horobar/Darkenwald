@@ -9,7 +9,6 @@ import com.example.darkenwald.repository.PlayerRepository
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
 import java.sql.Timestamp
-import java.time.Instant
 import java.time.LocalDateTime
 
 @Service
@@ -26,18 +25,19 @@ class MessageServiceImpl(
     }
 
     override fun fromDayStart(): List<MessageToRenderDTO> {
-        return messageRepository.findAllByCreatedAfterOrderByCreatedDesc(Timestamp.valueOf(startTime)).mapToViewModel()
+        return messageRepository.findAllByCreatedAfterOrderByCreatedAsc(Timestamp.valueOf(startTime)).mapToViewModel()
     }
 
-    override fun post(message: MessageDto): List<MessageToRenderDTO> {
-        val savedMessage = messageRepository.save(message.asMessageEntity(playerRepository = playerRepository))
-        return after(savedMessage.id!!)
+    override fun post(message: MessageDto, playerName: String): List<MessageToRenderDTO> {
+        val player = playerRepository.findByName(playerName)
+        val savedMessage = messageRepository.save(message.asMessageEntity(playerEntity = player))
+        return fromDayStart()
     }
 
     override fun after(messageId: Long): List<MessageToRenderDTO> {
         val thisMessage = messageRepository.findById(messageId)
         return messageRepository
-            .findAllByCreatedAfterOrderByCreatedDesc(Timestamp.valueOf(thisMessage.get().created.toLocalDateTime()))
+            .findAllByCreatedAfterOrderByCreatedAsc(Timestamp.valueOf(thisMessage.get().created.toLocalDateTime()))
             .mapToViewModel()
     }
 }

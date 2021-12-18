@@ -24,7 +24,7 @@ class PlayerEntity {
     lateinit var mail: String
 
     @Column(name = "AVATAR_IMAGE_LINK", nullable = false)
-    lateinit var avatarImageLink: String
+    var avatarImageLink: String = "assets/avatars/default_avatar.png"
 
     @Column(name = "IS_ADMIN", nullable = false)
     var isAdmin: Boolean = false
