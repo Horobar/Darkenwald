@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/darkenwald_db?createDatabaseIfNotExist=true
+    username: root
+    password: BraveWorld
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+
+  session:
+    store-type: jdbc
+    timeout: 900
+    jdbc:
+      initialize-schema: always
+
+logging:
+  config: classpath:logging/log4j2.yaml

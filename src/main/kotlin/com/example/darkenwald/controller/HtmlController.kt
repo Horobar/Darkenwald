@@ -10,7 +10,8 @@ import com.example.darkenwald.service.EditPlayerService
 import com.example.darkenwald.service.LoginService
 import com.example.darkenwald.service.MessageService
 import com.example.darkenwald.service.RegistrationService
-
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.ui.set
@@ -32,6 +33,8 @@ class HtmlController(
     private val registrationService: RegistrationService,
     private val editPlayerService: EditPlayerService
 ) {
+    val logger: Logger = LogManager.getLogger()
+
     @GetMapping("messagePost.html")
     fun getFragemnt(): ModelAndView{
         return ModelAndView("fragments/messagePost")
@@ -148,6 +151,7 @@ class HtmlController(
         val playerName = (session.getAttribute("playerInSession") as PlayerInSession).name
         message.created = LocalDateTime.now()
         model["messages"] = messageService.post(message, playerName)
+        logger.error(message.text)
         return model
     }
 }

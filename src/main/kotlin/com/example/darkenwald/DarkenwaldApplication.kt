@@ -2,6 +2,7 @@ package com.example.darkenwald
 
 import com.example.darkenwald.repository.RepositoryConfig
 import org.apache.catalina.security.SecurityConfig
+import org.apache.logging.log4j.LogManager
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.SpringBootConfiguration
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
@@ -16,6 +17,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy
 import org.springframework.context.annotation.Import
 import org.springframework.context.annotation.Profile
 import org.springframework.web.context.WebApplicationContext
+import javax.annotation.PreDestroy
 
 @SpringBootConfiguration
 @EnableAutoConfiguration
@@ -26,7 +28,13 @@ import org.springframework.web.context.WebApplicationContext
 )
 @EntityScan(basePackages = ["com.example.darkenwald.*"])
 @ComponentScan(basePackages = ["com.example.darkenwald.*"])
-class DarkenwaldApplication : SpringBootServletInitializer()
+class DarkenwaldApplication : SpringBootServletInitializer(){
+
+    @PreDestroy
+    fun cleanUp(){
+        LogManager.shutdown()
+    }
+}
 
 fun main(args: Array<String>) {
     runApplication<DarkenwaldApplication>(*args)
