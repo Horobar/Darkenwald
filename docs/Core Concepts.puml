@@ -1,0 +1,96 @@
+@startuml
+'https://plantuml.com/class-diagram
+ class Scene {
+        +Location location
+        +List~NPC~ npcs
+        +List~Event~ events
+        +StoryBite storyBite
+        +List~Clue~ clues
+        +List~LootItem~ loot
+        +changeLocation(Location)
+        +progressStory()
+    }
+    class Player {
+        +List~Condition~ conditions
+        +int health
+        +List~Organization~ affiliations
+        +List~Contact~ contacts
+        +List~Note~ notes
+        +List~ActivityLog~ activityLogs
+        +Avatar avatar
+        +updateHealth(int)
+        +addCondition(Condition)
+        +removeCondition(Condition)
+        +addNote(Note)
+        +logActivity(ActivityLog)
+    }
+    class NPC {
+        +Location currentLocation
+        +List~Organization~ affiliations
+        +List~ActivityLog~ activityLogs
+        +setLocation(Location)
+        +addAffiliation(Organization)
+        +logActivity(ActivityLog)
+    }
+    class ActivityLog {
+        +DateTime timestamp
+        +String description
+        +String actorType
+        +String actorId
+        +ActivityType type
+        +String associatedEntityId
+    }
+    class ActivityType {
+        <<enumeration>>
+        SOCIAL_INTERACTION
+        ACTION
+        LOCATION_CHANGE
+        STORY_FINDING
+        INFORMATION_RECEIVED
+    }
+    class Note {
+        +String content
+        +String tags
+        +String category
+        +String renderToHtml()
+    }
+    class Setting {
+        +List~Organization~ organizations
+        +List~Location~ places
+        +List~NPC~ npcs
+    }
+    class Story {
+        +List~Scene~ scenes
+        +addScene(Scene)
+        +connectScenes(Scene, Scene)
+    }
+    class Organization {
+        +List~NPC~ members
+        +List~Location~ places
+        +addMember(NPC)
+        +addPlace(Location)
+    }
+    class Location {
+        +List~NPC~ presentNPCs
+        +addNPC(NPC)
+        +removeNPC(NPC)
+    }
+    class Avatar {
+        +List~Condition~ visibleConditions
+        +List~Effect~ visibleEffects
+        +updateVisuals()
+    }
+
+    Story "1" -- "*" Scene : contains
+    Scene "1" -- "*" Player : involves
+    Scene "1" -- "1" Location : takes place in
+    Organization "1" -- "*" NPC : has members
+    Organization "1" -- "*" Location : owns/operates
+    NPC "1" -- "1" Location : is present at
+    NPC "*" -- "*" Organization : belongs to
+    Player "1" -- "*" Note : has
+    Player "1" -- "*" ActivityLog : logs activities
+    NPC "1" -- "*" ActivityLog : logs activities
+    ActivityLog "1" -- "1" ActivityType : has
+    Player "1" -- "1" Avatar : has
+@enduml

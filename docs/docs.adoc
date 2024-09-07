@@ -1,0 +1,179 @@
+= Darkenwald: DM Tooling Application Setup
+:toc:
+:toclevels: 3
+:sectnums:
+
+== Introduction
+
+This document outlines the setup and configuration for the Darkenwald DM (Dungeon Master) Tooling application, a Quarkus-based system deployed on a Raspberry Pi using Kubernetes (K3s).
+
+== System Architecture
+
+=== Components
+
+* *Backend*: Quarkus with Kotlin
+* *Frontend*: Server-side rendered using Qute and HTMX
+* *Database*: Hibernate with Panache, using PostgreSQL
+* *Deployment Target*: K3s cluster on a Raspberry Pi
+* *Development Environment*: IntelliJ IDEA Ultimate
+
+== Development Setup
+
+=== Prerequisites
+
+* JDK 21
+* Maven
+* Docker
+* Kubernetes CLI (kubectl)
+* Access to a Raspberry Pi with K3s installed
+
+=== Project Configuration
+
+==== Application Properties
+
+----
+quarkus.datasource.db-kind=postgresql
+quarkus.datasource.username=postgres
+quarkus.datasource.password=postgres
+quarkus.hibernate-orm.database.generation=drop-and-create
+quarkus.container-image.insecure=true
+quarkus.container-image.registry=192.168.13.100:5000
+quarkus.container-image.build=true
+quarkus.container-image.push=true
+quarkus.container-image.group=""
+quarkus.container-image.additional-tags=latest
+quarkus.jib.base-jvm-image=eclipse-temurin:21
+quarkus.container-image.architecture=arm64
+----
+
+==== Maven Build Comman
+----
+./mvnw package -Dquarkus.container-image.build=true \
+    -Dquarkus.container-image.push=true \
+    -Dquarkus.container-image.architecture=arm64
+----
+
+== Deployment
+
+=== Local Registry Setup
+
+. On the Raspberry Pi, start a local Docker registry:
++
+
+----
+sudo docker run -d -p 5000:5000 --restart=always --name registry registry:2
+----
+
+=== Kubernetes Deployment
+
+==== Deployment YAML
+
+----
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: darkenwald
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: darkenwald
+  template:
+    metadata:
+      labels:
+        app: darkenwald
+    spec:
+      containers:
+      - name: darkenwald
+        image: localhost:5000/darkenwald:latest
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: darkenwald
+spec:
+  selector:
+    app: darkenwald
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      nodePort: 30080
+----
+
+==== Applying the Deployment
+
+[source,bash]
+----
+kubectl apply -f deployment.yaml
+----
+
+=== Verifying Deployment
+
+. Check running pods:
++
+[source,bash]
+----
+kubectl get pods
+----
+
+. Check services:
++
+[source,bash]
+----
+kubectl get services
+----
+
+. Describe the service:
++
+
+----
+kubectl describe service darkenwald
+----
+
+== Accessing the Application
+
+The application should be accessible at `http://<Raspberry_Pi_IP>:30080`.
+
+== Troubleshooting
+
+=== Common Issues
+
+. *ImagePullBackOff*: Ensure the image is correctly pushed to the local registry and the image name in the deployment YAML matches the pushed image.
+
+. *404 Not Found*: Check the application logs and ensure endpoints are correctly defined in the Quarkus application.
+
+=== Useful Commands
+
+. View pod logs:
++
+----
+kubectl logs <pod-name>
+----
+
+. Execute into a pod:
++
+----
+kubectl exec -it <pod-name> -- /bin/sh
+----
+
+. Check service endpoints:
++
+[bash]
+----
+kubectl get endpoints
+----
+
+== Next Steps
+
+. Implement specific DM tooling features
+. Set up continuous integration/continuous deployment (CI/CD) pipeline
+. Implement user authentication and authorization
+. Develop a more comprehensive frontend using HTMX and Qute templates
+
+== Conclusion
+
+This setup provides a foundation for the Darkenwald DM Tooling application, leveraging Quarkus, Kubernetes, and ARM-based deployment on a Raspberry Pi. As development progresses, this documentation should be updated to reflect new features and configuration changes.

@@ -1,0 +1,151 @@
+{
+  "realm": "Darkenwald",
+  "enabled": true,
+  "sslRequired": "external",
+  "roles": {
+    "realm": [
+      {
+        "name": "Player",
+        "description": "Regular player in the Darkenwald realm"
+      },
+      {
+        "name": "DM",
+        "description": "Dungeon Master role"
+      },
+      {
+        "name": "Admin",
+        "description": "Administrator of the Darkenwald realm"
+      }
+    ]
+  },
+  "users": [
+    {
+      "username": "admin",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Admin",
+      "lastName": "User",
+      "email": "admin@darkenwald.com",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "adminPassword123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "Admin"
+      ]
+    },
+    {
+      "username": "player1",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Player",
+      "lastName": "One",
+      "email": "player1@darkenwald.com",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "player1Password",
+          "temporary": true
+        }
+      ],
+      "realmRoles": [
+        "Player"
+      ]
+    },
+    {
+      "username": "player2",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Player",
+      "lastName": "Two",
+      "email": "player2@darkenwald.com",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "player2Password",
+          "temporary": true
+        }
+      ],
+      "realmRoles": [
+        "Player"
+      ]
+    },
+    {
+      "username": "dm1",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Dungeon",
+      "lastName": "Master",
+      "email": "dm1@darkenwald.com",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "dm1Password",
+          "temporary": true
+        }
+      ],
+      "realmRoles": [
+        "DM"
+      ]
+    }
+  ],
+  "clients": [
+    {
+      "clientId": "darkenwald-app",
+      "enabled": true,
+      "clientProtocol": "openid-connect",
+      "publicClient": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": false,
+      "authorizationServicesEnabled": true,
+      "redirectUris": [
+        "http://localhost:8080/*"
+      ],
+      "webOrigins": [
+        "http://localhost:8080"
+      ],
+      "protocol": "openid-connect",
+      "attributes": {
+        "access.token.lifespan": "300",
+        "saml.assertion.signature": "false",
+        "saml.force.post.binding": "false",
+        "saml.multivalued.roles": "false",
+        "saml.encrypt": "false",
+        "oauth2.device.authorization.grant.enabled": "false",
+        "backchannel.logout.revoke.offline.tokens": "false",
+        "saml.server.signature": "false",
+        "saml.server.signature.keyinfo.ext": "false",
+        "use.refresh.tokens": "true",
+        "exclude.session.state.from.auth.response": "false",
+        "oidc.ciba.grant.enabled": "false",
+        "saml.artifact.binding": "false",
+        "backchannel.logout.session.required": "true",
+        "client_credentials.use_refresh_token": "false",
+        "saml_force_name_id_format": "false",
+        "saml.client.signature": "false",
+        "tls.client.certificate.bound.access.tokens": "false",
+        "require.pushed.authorization.requests": "false",
+        "saml.authnstatement": "false",
+        "display.on.consent.screen": "false",
+        "saml.onetimeuse.condition": "false"
+      }
+    }
+  ],
+  "browserFlow": "browser",
+  "registrationFlow": "registration",
+  "directGrantFlow": "direct grant",
+  "resetCredentialsFlow": "reset credentials",
+  "clientAuthenticationFlow": "clients",
+  "dockerAuthenticationFlow": "docker auth",
+  "attributes": {
+    "clientOfflineSessionMaxLifespan": "0",
+    "clientSessionIdleTimeout": "0",
+    "clientSessionMaxLifespan": "0",
+    "clientOfflineSessionIdleTimeout": "0"
+  }
+}

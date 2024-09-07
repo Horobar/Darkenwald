@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak
+  template:
+    metadata:
+      labels:
+        app: keycloak
+    spec:
+      containers:
+      - name: keycloak
+        image: quay.io/keycloak/keycloak:latest
+        args: ["start-dev","--log-level=DEBUG"]
+        env:
+        - name: DB_VENDOR
+          value: postgres
+        - name: DB_ADDR
+          value: postgres
+        - name: DB_PORT
+          value: "5432"
+        - name: DB_DATABASE
+          value: postgres
+        - name: DB_USER
+          value: postgres
+        - name: DB_PASSWORD
+          value: postgres
+        - name: KEYCLOAK_ADMIN
+          value: "admin"
+        - name: KEYCLOAK_ADMIN_PASSWORD
+          value: "admin"
+        - name: KC_PROXY
+          value: "edge"
+        - name: KC_HTTPS_CERTIFICATE_FILE
+          value: "/etc/x509/tls.crt"
+        - name: KC_HTTPS_CERTIFICATE_KEY_FILE
+          value: "/etc/x509/tls.key"
+        ports:
+        - name: http
+          containerPort: 8080
+        - name: https
+          containerPort: 8443
+        volumeMounts:
+          - mountPath: "/etc/x509"
+            name: keycloak-tls
+            readOnly: true
+          - name: postgres
+            mountPath: "/data"
+        readinessProbe:
+          httpGet:
+            path: /realms/master
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /realms/master
+            port: 8080
+          initialDelaySeconds: 60
+          periodSeconds: 30
+      volumes:
+        - name: postgres
+          persistentVolumeClaim:
+            claimName: postgres-volume-claim
+        - name: keycloak-tls
+          secret:
+            secretName: keycloak-tls

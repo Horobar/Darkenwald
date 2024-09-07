@@ -1,0 +1,18 @@
+{#include layout.html}
+    {#fragment id = main}
+        <div id="article" class="m-2 p-2 rounded grid grid-cols-[1fr_auto] gap-2 bg-yellow-200">
+            <div
+                    hx-get="/article/byId/{person.article.id}"
+                    hx-trigger="load"
+                    hx-swap="outerHTML">
+            </div>
+            <aside class="col-start-[-2] ] rounded p-2 bg-gray-100">
+                <h2>Stuff</h2>
+                <h3>Organizations</h3>
+                <p>The organizations of the person</p>
+                <h3>Locations</h3>
+                <p>The locations of the person</p>
+            </aside>
+        </div>
+    {/fragment}
+{/include}

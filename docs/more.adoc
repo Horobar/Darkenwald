@@ -1,0 +1,150 @@
+= Keycloak HTTPS Setup in Kubernetes
+:toc:
+:toclevels: 3
+:sectnums:
+
+== Overview
+
+This document describes the process of deploying Keycloak in a Kubernetes cluster with HTTPS enabled, using Traefik as the ingress controller and a self-signed certificate for development purposes.
+
+== Components
+
+* Kubernetes Cluster
+* Keycloak (latest version)
+* Traefik Ingress Controller
+* Self-signed SSL Certificate
+
+== Deployment Steps
+
+=== SSL Certificate Creation
+
+A self-signed SSL certificate was created for the domain `keycloak.local`:
+
+[source,bash]
+----
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=keycloak.local"
+----
+
+The certificate was then stored as a Kubernetes Secret:
+
+[source,bash]
+----
+kubectl create secret tls keycloak-tls --key tls.key --cert tls.crt
+----
+
+=== Keycloak Deployment
+
+The Keycloak Deployment was configured with the following key settings:
+
+[source,yaml]
+----
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak
+spec:
+  # ... other specs ...
+  template:
+    spec:
+      containers:
+      - name: keycloak
+        image: quay.io/keycloak/keycloak:latest
+        args:
+          - "start-dev"
+          - "--proxy=edge"
+          - "--hostname-strict=false"
+        env:
+        - name: KC_PROXY
+          value: "edge"
+        - name: KC_HOSTNAME
+          value: "keycloak.local"
+        - name: KC_HTTPS_CERTIFICATE_FILE
+          value: "/etc/x509/tls.crt"
+        - name: KC_HTTPS_CERTIFICATE_KEY_FILE
+          value: "/etc/x509/tls.key"
+        # ... other environment variables ...
+        ports:
+        - name: http
+          containerPort: 8080
+        - name: https
+          containerPort: 8443
+        volumeMounts:
+        - name: keycloak-tls
+          mountPath: "/etc/x509"
+          readOnly: true
+      volumes:
+      - name: keycloak-tls
+        secret:
+          secretName: keycloak-tls
+----
+
+=== Ingress Configuration
+
+The Ingress resource was configured to use HTTPS:
+
+[source,yaml]
+----
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: keycloak
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/router.tls: "true"
+spec:
+  tls:
+  - hosts:
+    - keycloak.local
+    secretName: keycloak-tls
+  rules:
+  - host: keycloak.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: keycloak
+            port:
+              number: 8080
+----
+
+=== Local Development Setup
+
+For local development, the following entry was added to the hosts file:
+
+[source]
+----
+192.168.13.100 keycloak.local
+----
+
+NOTE: Replace `192.168.13.100` with the actual cluster IP address.
+
+== Accessing Keycloak
+
+After deployment, Keycloak can be accessed at `https://keycloak.local`.
+
+IMPORTANT: Browser warnings about the self-signed certificate are expected in the development environment.
+
+== Security Considerations
+
+. The self-signed certificate is suitable for development but should be replaced with a trusted CA-issued certificate for production use.
+. Ensure that firewall rules allow traffic on port 443 (HTTPS).
+. Regular certificate renewal is necessary (current certificate valid for 365 days).
+. Client applications may need to be configured to trust the certificate or have certificate validation disabled for development purposes.
+
+== Next Steps
+
+. Thoroughly test all Keycloak features over HTTPS.
+. Update client applications to use the HTTPS Keycloak URL.
+. Plan for production certificate management (e.g., Let's Encrypt).
+. Consider implementing additional security headers.
+
+== Troubleshooting
+
+If issues arise, check the following:
+
+* Keycloak pod logs: `kubectl logs -l app=keycloak`
+* Ingress status: `kubectl get ingress`
+* Traefik logs (if using Traefik as ingress controller)
+* Browser console for any JavaScript errors

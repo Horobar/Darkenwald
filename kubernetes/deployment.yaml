@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: darkenwald
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: darkenwald
+  template:
+    metadata:
+      labels:
+        app: darkenwald
+    spec:
+      containers:
+      - name: darkenwald
+        image: localhost:5000/darkenwald:20240730_104840
+        ports:
+        - containerPort: 8080
+        - containerPort: 8443
+      volumes:
+        - name: keycloak-tls
+          secret:
+            secretName: keycloak-tls
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: darkenwald
+spec:
+  selector:
+    app: darkenwald
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080

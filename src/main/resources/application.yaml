@@ -1,0 +1,84 @@
+quarkus:
+  web-bundler:
+    dependencies:
+      auto-import: all
+    bundle:
+      components: true
+      components.key: main
+      components.qute-tags: true
+  datasource:
+    db-kind: postgresql
+    username: postgres
+    password: postgres
+  hibernate-orm:
+    database:
+      generation: drop-and-create
+  container-image:
+    insecure: true
+    registry: 192.168.13.100:5000
+    build: true
+    push: true
+    group: ""
+    additional-tags: latest
+  jib:
+    platforms:
+      - linux/arm64
+    base-jvm-image: eclipse-temurin:21
+  oidc:
+    application-type: hybrid
+    credentials:
+      secret: secret
+      tls:
+        verification: none
+  native:
+    additional-build-args: --initialize-at-run-time=com.vladsch.flexmark
+  http:
+    auth:
+      policy:
+        all-pages:
+          roles-allowed:
+            - user
+            - admin
+            - dm
+      permission:
+        authenticated:
+          paths:
+              - /*
+          policy: authenticated
+'%dev':
+  quarkus:
+    datasource:
+      db-kind: h2
+      jdbc:
+        url: jdbc:h2:mem:default;DB_CLOSE_DELAY=-1
+    hibernate-orm:
+      database:
+        generation: drop-and-create
+    oidc:
+      application-type: hybrid
+      client-id: backend-service
+    keycloak:
+      policy-enforcer:
+        enabled: true
+#      devservices:
+#        realm-path: quarkus-realm.json
+
+"%prod":
+  log:
+    level: DEBUG
+  quarkus:
+    datasource:
+      db-kind: postgresql
+      jdbc:
+        url: jdbc:postgresql://postgres:5432/darkenwald
+      username: postgres
+      password: postgres
+    hibernate-orm:
+      database:
+        generation: update
+    oidc:
+      auth-server-url: https://localhost:8080/realms/Darkenwald/protocol/openid-connect/auth
+      application-type: hybrid
+      client-id: darkenwald
+
+

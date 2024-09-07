@@ -1,0 +1,42 @@
+{#include layout.html}
+    {#title}DM Tooling - Home{/title}
+    {#main}
+        {#fragment id = main}
+            <div>
+                <h2>Library</h2>
+                <ul class="flex flex-row justify-between bg-gray-300">
+                    <li
+                            hx-get="/library/category/all"
+                            hx-target="#catalog"
+                    >All
+                    </li>
+                    {#for category in categories}
+                        <li
+                                hx-get="/library/category/{category.name}"
+                                hx-target="#catalog"
+                        >{category.name}</li>
+                    {/for}
+                </ul>
+                <div id="catalog">
+                    {#fragment id = catalog}
+                        {#for category in categories}
+                            <h3>{category.name}</h3>
+                            <ul>
+                                {#for link in category.links}
+                                    <li
+                                            hx-get="{link.path}/{link.id}"
+                                            hx-target="#catalog"
+                                            hx-swap="outerHTML"
+                                            hx-push-url="true"
+                                    >
+                                        {link.name}
+                                    </li>
+                                {/for}
+                            </ul>
+                        {/for}
+                    {/fragment}
+                </div>
+            </div>
+        {/fragment}
+    {/main}
+{/include}

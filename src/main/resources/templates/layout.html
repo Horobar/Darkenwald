@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{title ?: "Title"}</title>
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css"/>
+    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+        {#bundle /}
+</head>
+<body class="max-h-screen h-screen" hx-headers='{"{inject:csrf.headerName}":"{inject:csrf.token}"}'>
+<header class="grid grid-cols-[1fr_auto] bg-gray-800 h-max p-1 items-center">
+    <h1 class="headerArea text-4xl font-bold text-white justify-self-center">
+        {#insert header}Darkenwald{/}
+    </h1>
+    <div hx-get="/user/avatar"
+         hx-trigger="load userUpdated"
+    class="p-1 bg-gray-600 hover:bg-gray-400 rounded"></div>
+</header>
+<nav>
+    <ul class="flex flex-col bg-gray-300 w-auto h-full" hx-target="main" hx-push-url="true">
+        <li class="bg-gray-400 hover:bg-gray-500 p-1" hx-get="/">Index</li>
+        <li class="bg-gray-400 hover:bg-gray-500 p-1" hx-get="/dm">Masters Lair</li>
+        <li class="bg-gray-400 hover:bg-gray-500 p-1" hx-get="/library/site">Library</li>
+    </ul>
+</nav>
+
+<main class="grid p-2 w-fit">
+    {#insert main}No Main Inserted{/insert}
+</main>
+<footer>
+    <p class="footerArea grid justify-center items-center p-2 text-2xl font-bold bg-gray-800 text-white">
+        {#insert footer}No Footer{/}
+    </p>
+</footer>
+</body>
+</html>
+
+

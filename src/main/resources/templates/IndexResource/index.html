@@ -1,0 +1,23 @@
+{#include layout.html}
+    {#title}DM Tooling - Home{/title}
+    {#main}
+        {#fragment id = main}
+        <h2 class="">Welcome to Darkenwald</h2>
+            <h1>Your Campaigns</h1>
+            <ul>
+                {#for campaign in campaigns}
+                    <li>{campaign.name}</li>
+                {/for}
+            </ul>
+            <button hx-get="/campaigns/new" hx-target="#main-content">Create New Campaign</button>
+            <h1>Your Characters</h1>
+            <ul>
+                {#for character in characters}
+                    <li>{character.name}</li>
+                {/for}
+            </ul>
+            <button hx-get="/characters/new" hx-target="#main-content">Create New Character</button>
+
+        {/fragment}
+    {/main}
+{/include}

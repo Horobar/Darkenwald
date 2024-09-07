@@ -1,0 +1,80 @@
+{!<div id="article-{article.id}-edit" class="grid grid-rows-[1fr_auto] overflow-auto">!}
+{!<textarea>{article.content}</textarea>!}
+{!<div id="button-bar" class="p-2 flex justify-end items-center gap-1">!}
+{!<button class="btn bg-gray-100"!}
+{!hx-get="/article/byId/{article.id}"!}
+{!hx-target="#article-{article.id}-edit"!}
+{!hx-swap="outerHTML">Cancel!}
+{!</button>!}
+{!<button class="btn bg-green-300">Save</button>!}
+{!<button class="btn bg-red-300">Delete</button>!}
+{!</div>!}
+{!</div>!}
+
+<div class="container mx-auto p-4" id="article-{article.id}-edit">
+    <h1 class="text-3xl font-bold mb-4">Edit Article</h1>
+    <form id="articleForm"
+          hx-put="/article/{article.id}"
+          hx-trigger="submit"
+          hx-target="#article-{article.id}-edit"
+          hx-swap="outerHTML">
+        <div class="mb-4">
+            <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+            <input type="text" id="title" name="title" value="{article.title}"
+                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+        </div>
+        <div class="mb-4">
+            <label for="editor" class="block text-sm font-medium text-gray-700">Content</label>
+            <div id="editor"></div>
+            <input type="hidden" id="content" name="content">
+        </div>
+        <div class="flex justify-end">
+            <button class="btn bg-gray-100"
+                    hx-get="/article/byId/{article.id}"
+                    hx-target="#article-{article.id}-edit"
+                    hx-swap="outerHTML">Cancel
+            </button>
+            <button type="submit"
+                    class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Save
+            </button>
+        </div>
+    </form>
+
+    <script>
+        (function () {
+            let editorInstance;
+
+            function initEditor() {
+                if (!editorInstance) {
+                    editorInstance = new toastui.Editor({
+                        el: document.querySelector('#editor'),
+                        height: '500px',
+                        initialEditType: 'markdown',
+                        previewStyle: 'vertical',
+                        initialValue: `{article.content.raw}`,
+                        toolbarItems: [
+                            ['heading', 'bold', 'italic', 'strike'],
+                            ['hr', 'quote'],
+                            ['ul', 'ol', 'task', 'indent', 'outdent'],
+                            ['table', 'image', 'link'],
+                            ['scrollSync'],
+                        ]
+                    });
+                }
+                document.getElementById('articleForm').addEventListener('submit', function (e) {
+                    document.getElementById('content').value = editorInstance.getMarkdown();
+                });
+            }
+
+            // Initialize the editor when the DOM is fully loaded
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initEditor);
+            } else {
+                initEditor();
+            }
+        })();
+
+    </script>
+</div>
+
+

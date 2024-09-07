@@ -1,0 +1,27 @@
+{#fragment id = setting_select}
+    <li id="select_setting" hx-swap-oob="true">
+        <select class="mt-1">
+            {#for setting in settings}
+                <option value="{setting.id}">{setting.name}</option>
+            {/for}
+        </select>
+    </li>
+{/fragment}
+
+{#fragment id = player_show}
+    <li id="player_show" hx-swap-oob="true">
+        <menu class="mt-1 flex flex-row gap-2">
+            {#for player in players}
+            <li class="border-solid">
+                {#let characterInitials = player.name.substring(0, 2).toUpperCase()}
+                    <div class="avatar">
+                        <div class="picture">
+                            {characterInitials}
+                        </div>
+                        <span class="name">{player.name}</span>
+                    </div>
+                {/let}
+                {/for}
+        </menu>
+    </li>
+{/fragment}

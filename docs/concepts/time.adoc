@@ -1,0 +1,14 @@
+= Time
+
+== Concept
+During a campaign, it is quite difficult to keep track of time.
+This program should assist by this.
+There will be a calendar and a watch to keep track of time.
+The GM can add events to the tool, and it alarms the players when the time comes.
+
+There are two ways time can pass:
+
+1. Continuous time: The time passes in a specific speed.
+2. Activity-based time: The time passes when the players do something.
+
+The GM can switch between these two modes.

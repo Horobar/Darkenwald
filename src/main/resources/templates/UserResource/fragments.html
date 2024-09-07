@@ -1,0 +1,11 @@
+{#fragment id = "avatar" }
+    {#let characterInitials = name.substring(0, 2).toUpperCase()}
+        <div class="avatar" id="user_avatar" hx-get="/user/settings" hx-target="main" hx-push-url="true">
+            <div class="picture">
+                {characterInitials}
+            </div>
+            <span class="name">{name}</span>
+        </div>
+    {/let}
+{/fragment}
+

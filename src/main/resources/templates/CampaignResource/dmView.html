@@ -1,0 +1,29 @@
+{#include layout.html}
+    {#title}DM Tooling - Home{/title}
+    {#main}
+        {#fragment id = main}
+            <menu id="CampMeta-Container" class="flex flex-row gap-1 h-max items-center justify-between border-black border-b-2 ">
+                <li class="flex flex-col">
+                    <select id="campaigns"
+                            name="campaign"
+                            class="mt-1"
+                            hx-get="/dm/campaign"
+                            hx-trigger="load, change"
+                            hx-swap="none">
+                        {#for campaign in campaigns}
+                            <option value="{campaign.id}">{campaign.name}</option>
+                        {/for}
+                    </select>
+                </li>
+                <li id="select_setting">Placeholder</li>
+                <li id="player_show">Placeholder</li>
+                <li>ingame-Calendar</li>
+                <li>ingame-nofications</li>
+
+            </menu>
+
+            <h1>Welcome to your Campaign</h1>
+            <p>Lot of content</p>
+        {/fragment}
+    {/main}
+{/include}
